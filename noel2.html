@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chọn Món Quà Noel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #ffcccb; /* Nền màu hồng nhạt */
+            overflow: hidden; /* Ẩn thanh cuộn */
+            position: relative; /* Để định vị các hình ảnh */
+        }
+        .option {
+            margin: 10px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.7); /* Màu đen với độ trong suốt */
+            color: transparent; /* Che chữ */
+            cursor: pointer; /* Thay đổi con trỏ khi di chuột qua */
+            width: 300px; /* Đặt chiều rộng cho các lựa chọn */
+            position: relative; /* Để overlay có thể được định vị */
+            transition: color 0.3s, background-color 0.3s; /* Hiệu ứng chuyển đổi */
+        }
+        .option.visible {
+            color: black; /* Hiển thị chữ khi lựa chọn được mở */
+            background-color: #f9f9f9; /* Màu nền bình thường */
+        }
+        .option.selected {
+            background-color: #ffcc80; /* Tô màu cam nhạt lựa chọn được chọn */
+        }
+        .snow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Không cho phép tương tác */
+            overflow: hidden;
+        }
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Hãy chọn một món quà cho Noel này</h1>
+
+    <div id="options">
+        <div class="option" onclick="selectOption(this)">1. Chị sẽ nắc em</div>
+        <div class="option" onclick="selectOption(this)">2. Em được nắc chị</div>
+        <div class="option" onclick="selectOption(this)">3. Hun em 100 cái</div>
+        <div class="option" onclick="selectOption(this)">4. Tất cả lựa chọn ở trên</div>
+    </div>
+
+    <div class="snow" id="snowContainer"></div>
+
+    <script>
+        function createSnowflakes() {
+            const snowContainer = document.getElementById('snowContainer');
+            for (let i = 0; i < 100; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                const size = Math.random() * 10 + 5; // Kích thước ngẫu nhiên
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Thời gian rơi ngẫu nhiên
+                snowflake.style.opacity = Math.random(); // Độ mờ ngẫu nhiên
+                snowContainer.appendChild(snowflake);
+            }
+        }
+
+        function selectOption(selectedOption) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.classList.remove('visible'); // Che đen tất cả các lựa chọn
+                option.classList.remove('selected'); // Bỏ tô màu lựa chọn khác
+            });
+
+            selectedOption.classList.add('selected'); // Tô màu cam nhạt lựa chọn được chọn
+            selectedOption.classList.add('visible'); // Mở lựa chọn đã chọn
+
+            // Tự động mở sáng các lựa chọn còn lại
+            setTimeout(() => {
+                options.forEach(option => {
+                    if (option !== selectedOption) {
+                        option.classList.add('visible'); // Mở sáng các lựa chọn còn lại
+                    }
+                });
+            }, 1000); // Thời gian chờ 1 giây trước khi mở sáng các lựa chọn còn lại
+        }
+
+        // Khởi tạo tuyết rơi khi trang được tải
+        window.onload = createSnowflakes;
+    </script>
+
+</body>
+</html>
